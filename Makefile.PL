@@ -18,8 +18,8 @@ WriteMakefile(
         'Test::More' => 0,
     },
     PREREQ_PM => {
-        #'ABC'              => 1.6,
-        #'Foo::Bar::Module' => 5.0401,
+        'Smart::Comments'  => 1.0,
+        'Log::Log4perl'    => 1.046,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Smart-Comments-Log4perl-*' },
