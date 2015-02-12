@@ -21,9 +21,16 @@ our $VERSION = '0.01';
 our $INITIALIZED;
 our $LAYOUT;
 our $CONFIG_FILE;
+our $LOG_LEVEL = 'info';
 
 my %ADDITIONAL_SMART_COMMENT_KEYWORDS = (
-     'log_config:' => sub { $CONFIG_FILE = $_[3][0]; },
+     'l4p_config:' => sub { $CONFIG_FILE = $_[3][0]; },
+     'l4p_fatal:'  => sub { _log_at_level('fatal', @_); },
+     'l4p_warn:'   => sub { _log_at_level('warn',  @_); },
+     'l4p_info:'   => sub { _log_at_level('info',  @_); },
+     'l4p_debug:'  => sub { _log_at_level('debug', @_); },
+     'l4p_trace:'  => sub { _log_at_level('trace', @_); },
+     'l4p_level:'  => sub { $LOG_LEVEL = lc $_[3][0]; },
 );
 
 my $LOG_HANDLE;
@@ -46,9 +53,15 @@ Perhaps a little code snippet.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 _prep_logging
-
 =cut
+
+sub _log_at_level
+{
+	my ($level, @args) = @_;
+	local $LOG_LEVEL = $level;
+	$args[1] = q{};
+	_l4p_Dump(@args);
+}
 
 sub _prep_logging
 {
@@ -82,7 +95,7 @@ sub _l4p_Dump
 	my ($package) = caller;
 	if (@_ > 1 && exists $ADDITIONAL_SMART_COMMENT_KEYWORDS{lc $_[1]})
 	{
-		$ADDITIONAL_SMART_COMMENT_KEYWORDS{$_[1]}->(@_);
+		$ADDITIONAL_SMART_COMMENT_KEYWORDS{lc $_[1]}->(@_);
 		return;
 	}
 	_prep_logging($package);
@@ -149,11 +162,20 @@ sub TELL
 	return tell L4P_ORIGINAL_STDERR;
 }
 
+my %LOGGER_DISPATCH = (
+     'fatal' => sub { return $LOG_HANDLE->fatal(@_); },
+     'warn'  => sub { return $LOG_HANDLE->warn(@_);  },
+     'info'  => sub { return $LOG_HANDLE->info(@_);  },
+     'debug' => sub { return $LOG_HANDLE->debug(@_); },
+     'trace' => sub { return $LOG_HANDLE->trace(@_); },
+);
+
 sub PRINT
 {
 	shift;
 	local *STDERR = *L4P_ORIGINAL_STDERR;
-	return $LOG_HANDLE->info(@_);
+	return unless exists $LOGGER_DISPATCH{$LOG_LEVEL};
+	return $LOGGER_DISPATCH{$LOG_LEVEL}->(@_);
 }
 
 =head1 AUTHOR

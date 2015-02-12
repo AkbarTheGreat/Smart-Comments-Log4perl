@@ -10,13 +10,20 @@ close *STDERR;
 my $STDERR = q{};
 open *STDERR, '>', \$STDERR;
 
-### log_config: 't/warning_only.config'
-### Testing 1...
-#### Testing 2...
-##### Testing 3...
+### l4p_config: 't/warning_only.config'
+### l4p_warn:  'Testing 1...'
+### l4p_debug: 'Testing 2...'
+### l4p_info:  'Testing 3...'
+
+### Testing 4...
+### l4p_level: 'info'
+### Testing 5...
+### l4p_level: 'warn'
+### Testing 6...
 
 # Because the "TELL" on $STDERR doesn't act like a normal TELL, we have artifacts in our output
-my $expected = "\n" . '### Testing 1...' . "\n";
+my $expected = "\n" . q{###  'Testing 1...'} . "\n"
+             . "\n" . q{### Testing 6...}    . "\n";
 
 is $STDERR, $expected  => 'Logging levels work';
 
