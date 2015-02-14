@@ -20,7 +20,7 @@ Version 0.01
 our $VERSION = '0.01';
 our $INITIALIZED;
 our $LAYOUT;
-our $CONFIG_FILE;
+our $CONFIG_FILE = $ENV{'SCL4P_CONFIG'};
 our $LOG_LEVEL = 'info';
 
 my %ADDITIONAL_SMART_COMMENT_KEYWORDS = (
@@ -41,13 +41,36 @@ Smart:Comments is a great module which allows debug to be completely ignored dur
 necessary.  Log4perl turns logging up a notch, allowing easy logging to STDOUT/STDERR or file handles easily.  This seeks to combine the
 two in a useful manner.
 
-Perhaps a little code snippet.
+Here's a brief code snippet.
 
 	use Smart::Comments::Log4perl;
 
 	my $foo = {};
 	### Log a varianble: $foo;
 	...
+
+=head1 CONFIGURATION
+
+Configuration of Log4Perl is very simple by default, with no additional decorations above Smart::Comments, with a to-screen logger that
+logs at debug and above.  Wholesale configuration may be done via a Log4perl configuration file, which can be loaded into the system by
+either setting the SCL4P_CONFIG environment variable to the location of the file or by placing the following line:
+	### l4p_config: 'config/location'
+Variables may also be used in this configuration:
+	### l4p_config: "/log_root/$log_file"
+
+Please note: Once a single line of logging has occurred, the ### l4p_config lines will be ignored, as there is no way to re-intialize
+the Log4perl system at the moment.
+
+=head1 LOGGING
+
+All normal ### smart comments will, by default, be logged as INFO level logs.  The level for regular smart comments may be changed by
+calling the meta-command:
+	### l4p_level: 'INFO'
+(Other valid options are FATAL, WARN, DEBUG, and TRACE)
+A single line of logging may be run at a different level by a matching meta-command per level:
+	### l4p_trace: 'This is a TRACE level log'
+Note that anything after the : must evaluate to a valid Perl string in order to log successfully.  Analog meta-commands exist for all 5
+available log levels
 
 =head1 EXPORT
 
@@ -86,10 +109,6 @@ sub _prep_logging
 	return;
 }
 
-=head2 l4p_Dump
-
-=cut
-
 sub _l4p_Dump
 {
 	my ($package) = caller;
@@ -123,7 +142,8 @@ sub _while_progress
 }
 
 =pod
-          These are the nasty hacks to hijack Smart::Comments
+   These are the nasty hacks to hijack Smart::Comments -- I'd love to have a better way to hook into that framework, but this was the
+   most useful method I could come up with.
 =cut
 
 unless ( $INITIALIZED )
@@ -180,7 +200,7 @@ sub PRINT
 
 =head1 AUTHOR
 
-Tracy Beck, C<< <tbeck at qti.qualcomm.com> >>
+Tracy Beck, C<< <tgbeck at acm.org> >>
 
 =head1 BUGS
 
