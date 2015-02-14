@@ -13,11 +13,11 @@ Smart::Comments::Log4perl - An extension of Smart::Comments to utilize Log::Log4
 
 =head1 VERSION
 
-Version 0.01
+Version 1.00
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '1.00';
 our $INITIALIZED;
 our $LAYOUT;
 our $CONFIG_FILE = $ENV{'SCL4P_CONFIG'};
