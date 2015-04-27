@@ -140,10 +140,8 @@ sub _while_progress
 	return;
 }
 
-=pod
-   These are the nasty hacks to hijack Smart::Comments -- I'd love to have a better way to hook into that framework, but this was the
-   most useful method I could come up with.
-=cut
+#   These are the nasty hacks to hijack Smart::Comments -- I'd love to have a better way to hook into that framework, but this was the
+#   most useful method I could come up with.
 
 unless ( $INITIALIZED )
 {
@@ -165,9 +163,8 @@ unless ( $INITIALIZED )
 
 tie *L4P_OVERRIDE_STDERR, 'Smart::Comments::Log4perl::IO';
 
-=pod
-       A new package we can tie to STDERR temporarily to hijack Smart::Comment's output
-=cut
+#   A new package we can tie to STDERR temporarily to hijack Smart::Comment's output
+
 package Smart::Comments::Log4perl::IO;
 use base qw<Tie::Handle>;
 use Symbol qw<geniosym>;
