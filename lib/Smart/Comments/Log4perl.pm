@@ -2,7 +2,6 @@ package Smart::Comments::Log4perl;
 
 use 5.016;
 use strict;
-use warnings;
 use Smart::Comments;
 use Log::Log4perl qw(get_logger :levels);
 use Scalar::Util qw(openhandle);
