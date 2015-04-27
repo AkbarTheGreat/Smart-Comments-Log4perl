@@ -3,3 +3,6 @@
 /MYMETA.yml
 /pm_to_blib
 /blib/
+/Smart-Comments-Log4perl-*/
+/Smart-Comments-Log4perl-*.tar.gz
+
