@@ -45,7 +45,7 @@ Here's a brief code snippet.
 	use Smart::Comments::Log4perl;
 
 	my $foo = {};
-	### Log a varianble: $foo;
+	### Log a variable: $foo;
 	...
 
 =head1 CONFIGURATION
