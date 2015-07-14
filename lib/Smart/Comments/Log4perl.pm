@@ -190,6 +190,9 @@ sub PRINT
 {
 	shift;
 	local *STDERR = *L4P_ORIGINAL_STDERR;
+	# Kind of a magic number, needed to step back out of these frames deep enough to find where the smart::comment was originally
+	#   So, Smart::Comments::Dump, PRINT, LOGGER_DISPATCH, etc.
+	local $Log::Log4perl::caller_depth = 4;
 	return unless exists $LOGGER_DISPATCH{$LOG_LEVEL};
 	return $LOGGER_DISPATCH{$LOG_LEVEL}->(@_);
 }
