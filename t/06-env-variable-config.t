@@ -23,7 +23,8 @@ open *STDERR, '>', \$STDERR;
 ##### Testing 3...
 
 # Build a regex to the filename, to maintain cross-platform compatability
-my $sc_subpath = File::Spec->catfile('t', '06-env-variable-config.t');
+#my $sc_subpath = File::Spec->catfile('t', '06-env-variable-config.t');
+my $sc_subpath = '06-env-variable-config.t';
 
 my $expected = qr{
                   \[\d+\] \s .*\Q$sc_subpath\E \s \d+ \s main \s \-                                 \s+

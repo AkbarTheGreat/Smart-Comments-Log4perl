@@ -21,7 +21,8 @@ my $CONFIG = 'complex';
 ##### Testing 3...
 
 # Build a regex to the filename, to maintain cross-platform compatability
-my $sc_subpath = File::Spec->catfile('t', '05-variable-interpolation.t');
+#my $sc_subpath = File::Spec->catfile('t', '05-variable-interpolation.t');
+my $sc_subpath = '05-variable-interpolation.t';
 
 my $expected = qr{
                   \[\d+\] \s .*\Q$sc_subpath\E \s \d+ \s main \s \-                                 \s+
